@@ -1,0 +1,25 @@
+{% if search_form %}
+<div class="content-section">
+    <form method="GET" action="{{ url_for('sub_menu.search') }}" enctype="multipart/form-data" name="search">
+        {{ search_form.hidden_tag() }}
+        <fieldset class="form-group">
+            <div class="form-group">
+                {{ search_form.search.label(class="form-control-label") }}
+                {% if search_form.search.errors %}
+                    {{ search_form.search(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in search_form.search.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ search_form.search(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ search_form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+{% endif %}

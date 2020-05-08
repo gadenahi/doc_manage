@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>{{ title }} </h2>
+    <article class="media content-section">
+        <table class="table table-bordered table-hover ">
+            <thead>
+            <tr bgcolor="#00FFFF">
+                <th>Report Title</th>
+                <th>Summary</th>
+                <th>Published</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for report in reports.items %}
+                {# {% if report.manager == current_user %} #}
+                {% if current_user.is_authenticated %}
+                    {% if report.status=="0"%}
+                    <tr bgcolor="#ffffc0">
+                        <td><a class="archive-title" href="{{ url_for('reports.report', report_id=report.id) }}">{{ report.title}} (Draft)</a></td>
+                        <td>{{ report.summary }}</td>
+                        <td>{{ report.date_published }}</td>
+                        <td> ${{ "{:,d}".format(report.price) }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td><a class="archive-title" href="{{ url_for('reports.report', report_id=report.id) }}">{{ report.title}}</a></td>
+                        <td>{{ report.summary }}</td>
+                        <td>{{ report.date_published }}</td>
+                        <td> ${{ "{:,d}".format(report.price) }}</td>
+                    </tr>
+                    {% endif %}
+                {% else %}
+                    {% if report.status=="1"%}
+                    <tr>
+                        <td><a class="archive-title" href="{{ url_for('reports.report', report_id=report.id) }}">{{ report.title}}</a></td>
+                        <td>{{ report.summary }}</td>
+                        <td>{{ report.date_published }}</td>
+                        <td> ${{ "{:,d}".format(report.price) }}</td>
+                    </tr>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </article>
+
+    {% for page_num in reports.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if page_num %}
+        {% if reports.page == page_num %}
+            {% if title == "Market Report List" %}
+            <a class="btn btn-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+            {% else %}
+            <a class="btn btn-info mb-4" href="{{ url_for('sub_menu.search', page=page_num, search=q) }}">{{ page_num }}</a>
+            {% endif %}
+        {% else%}
+            {% if title == "Market Report List" %}
+            <a class="btn btn-outline-info mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+            {% else %}
+            <a class="btn btn-outline-info mb-4" href="{{ url_for('sub_menu.search', page=page_num, search=q) }}">{{ page_num }}</a>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        ...
+    {% endif %}
+    {% endfor %}
+
+{% endblock content %}

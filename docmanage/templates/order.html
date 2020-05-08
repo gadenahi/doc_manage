@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>{{ title }} </h2>
+            {% if session.Order %}
+    <article class="media content-section">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr bgcolor="#00FFFF">
+                <th>Report Title</th>
+                <th>Price</th>
+                <th>QTY</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for cart in session.get('Order') %}
+                    <tr>
+                        <td><a class="archive-title" href="{{ url_for('reports.report', report_id=cart.id) }}">{{ cart.title }}</a></td>
+                        <td>${{ "{:,d}".format(cart.price) }}</td>
+                        <td>{{ cart.qty }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </article>
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>Total</th>
+                    <td>${{ "{:,d}".format(amount) }}</td>
+                </tr>
+            </table>
+<div class="content-section">
+    <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <div class="form-group">
+                {{ form.firstname.label(class="form-control-label") }}
+                {% if form.firstname.errors %}
+                    {{ form.firstname(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.firstname.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.firstname(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.lastname.label(class="form-control-label") }}
+                {% if form.lastname.errors %}
+                    {{ form.lastname(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.lastname.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.lastname(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.email.label(class="form-control-label") }}
+                {% if form.email.errors %}
+                    {{ form.email(class="form-control form-control-lg is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.email.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.email(class="form-control form-control-lg") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+            {% endif %}
+
+{% endblock content %}

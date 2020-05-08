@@ -1,0 +1,5 @@
+test_html_convert/
+static/report_pdfs
+*.db
+*.pdf
+.idea/

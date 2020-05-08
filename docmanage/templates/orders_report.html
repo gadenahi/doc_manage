@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if current_user.is_authenticated %}
+    {% for report in reports.items %}
+    <h2>{{ title }}: {{ report.title }} </h2>
+    <article class="media content-section">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr bgcolor="#00FFFF">
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Order Date</th>
+                <th>Order Price</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for r in report.order %}
+                <tr>
+                    <td>{{ r.firstname }}</td>
+                    <td>{{ r.lastname }}</td>
+                    <td>{{ r.email }}</td>
+                    <td>{{ r.date_order.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td> ${{ "{:,d}".format(r.order_price) }}</td>
+                </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </article>
+    {% for page_num in reports.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if page_num %}
+        {% if reports.page == page_num %}
+            <a class="btn btn-info mb-4" href="{{ url_for('reports.show_orders_report', page=page_num, report_id=report_id) }}">{{ page_num }}</a>
+        {% else%}
+            <a class="btn btn-outline-info mb-4" href="{{ url_for('reports.show_orders_report', page=page_num, report_id=report_id) }}">{{ page_num }}</a>
+        {% endif %}
+    {% else %}
+        ...
+    {% endif %}
+    {% endfor %}
+{% endif %}
+{% endblock content %}
