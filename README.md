@@ -5,7 +5,7 @@ This is a project for report shopping site using:
 - Python3
 - Flask 1.1
 - SQLAlchemy
-- Flask8
+- Flake8
 
 This site provides:
 - Upload the report 
