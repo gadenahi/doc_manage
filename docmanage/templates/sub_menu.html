@@ -2,9 +2,8 @@
 <div class="content-section">
     <form method="GET" action="{{ url_for('sub_menu.search') }}" enctype="multipart/form-data" name="search">
         {{ search_form.hidden_tag() }}
-        <fieldset class="form-group">
             <div class="form-group">
-                {{ search_form.search.label(class="form-control-label") }}
+                <h4 class="archive-title">{{ search_form.search.label(class="form-control-label") }}</h4>
                 {% if search_form.search.errors %}
                     {{ search_form.search(class="form-control form-control-lg is-invalid") }}
                     <div class="invalid-feedback">
@@ -16,10 +15,26 @@
                     {{ search_form.search(class="form-control form-control-lg") }}
                 {% endif %}
             </div>
-        </fieldset>
         <div class="form-group">
             {{ search_form.submit(class="btn btn-outline-info") }}
         </div>
     </form>
+    {% if latest_reports %}
+        <div class="archive-recent-posts">
+        <h4 class="archive-title">Recent Reports</h4>
+        {% for l_report in latest_reports %}
+        <article class="media archive-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <h5><a class="archive-title" href="{{ url_for('reports.report', report_id=l_report.id) }}">{{ l_report.title }}</a></h5>
+                    <small class="text-muted">{{ l_report.date_published.strftime('%Y-%m-%d') }}</small>
+                    <p>{{ l_report.summary }}</p>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+        </div>
+
+    {% endif %}
 </div>
 {% endif %}

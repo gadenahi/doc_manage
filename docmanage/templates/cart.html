@@ -16,7 +16,7 @@
                 {% for cart in session.get('Order') %}
                     <tr>
                         <td><a class="archive-title" href="{{ url_for('reports.report', report_id=cart.id) }}">{{ cart.title }}</a></td>
-                        <td> ${{ "{:,d}".format(cart.price) }} </td>
+                        <td> ${{ "{:,d}".format(cart.order_price) }} </td>
                         <td>{{ cart.qty }}</td>
                         <td>
                             <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Remove</button>
@@ -54,7 +54,7 @@
                 <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('reports.new_order') }}">Process Payment</a>
             </div>
     {% else %}
-    <h2>{{ title }}(Empty) </h2>
+    <h2>{{ title }} </h2>
     {% endif %}
 
 {% endblock content %}

@@ -2,7 +2,7 @@
 {% block content %}
     <h2>{{ title }} </h2>
             {% if session.Order %}
-    <article class="media content-section">
+     <article class="media content-section">
         <table class="table table-bordered table-hover">
             <thead>
             <tr bgcolor="#00FFFF">
@@ -15,7 +15,7 @@
                 {% for cart in session.get('Order') %}
                     <tr>
                         <td><a class="archive-title" href="{{ url_for('reports.report', report_id=cart.id) }}">{{ cart.title }}</a></td>
-                        <td>${{ "{:,d}".format(cart.price) }}</td>
+                        <td>${{ "{:,d}".format(cart.order_price) }}</td>
                         <td>{{ cart.qty }}</td>
                     </tr>
                 {% endfor %}

@@ -4,8 +4,9 @@ from flask_login import current_user, login_required
 from docmanage import db
 from docmanage.models import Report, Order
 from docmanage.reports.forms import ReportForm, OrderForm
-from docmanage.reports.utils import save_pdf
+from docmanage.reports.utils import save_pdf, get_amount
 from docmanage.sub_menu.forms import SearchForm
+from docmanage.sub_menu.utils import get_latest_reports
 
 
 reports = Blueprint('reports', __name__)
@@ -50,8 +51,10 @@ def report(report_id):
     """
     search_form = SearchForm()
     report = Report.query.get_or_404(report_id)
+    latest_reports = get_latest_reports()
     return render_template('report.html', title=report.title, report=report,
-                           search_form=search_form)
+                           search_form=search_form,
+                           latest_reports=latest_reports)
 
 
 @reports.route('/report/<int:report_id>/update', methods=['GET', 'POST'])
@@ -117,30 +120,25 @@ def add_cart(report_id):
     :return:
     """
     # session['Order'] = []
+    
     if 'Order' not in session:
         session['Order'] = []
     report = Report.query.get_or_404(report_id)
     order_list = session['Order']
     if report.status == str(1):
-        if not order_list:
+        data_in = False
+        for data in order_list:
+            if report.title in data['title']:
+                data_in = True
+                break
+
+        if not order_list or data_in is False:
             order_list.append({'id': report.id, 'title': report.title,
-                                'price': report.price, 'qty': 1})
+                                'order_price': report.price, 'qty': 1})
             session['Order'] = order_list
             flash('The report has been added', 'success')
         else:
-            data_in = False
-            for data in order_list:
-                if report.title in data['title']:
-                    data_in = True
-                    break
-
-            if data_in is False:
-                order_list.append({'id': report.id, 'title': report.title,
-                                    'price': report.price, 'qty': 1})
-                session['Order'] = order_list
-                flash('The report has been added', 'success')
-            else:
-                flash('The report is already in the cart', 'success')
+            flash('The report is already in the cart', 'success')
     else:
         flash('The report is still draft', 'success')
 
@@ -158,7 +156,6 @@ def remove_cart(report_id):
     order_list = session['Order']
 
     for i, data in enumerate(order_list):
-        # print(i, data)
         if report_id == data['id']:
             order_list.pop(i)
             break
@@ -173,20 +170,20 @@ def remove_cart(report_id):
 def show_cart():
     """
     To show cart
-    :return: render cart.html, title, amount, search_form
+    :return: render cart.html, title, amount, search_form, latest_reports
     """
-    search_form = SearchForm()
     amount = 0
-    if 'Order' in session:
+    search_form = SearchForm()
+    if 'Order' in session and len(session['Order']) != 0:
         cart_list = session['Order']
-        for cart in cart_list:
-            amount += cart['price']
+        amount = get_amount(cart_list, 'session')
         title = 'Cart'
     else:
         title = 'Cart(Empty)'
-
+    latest_reports = get_latest_reports()
     return render_template('cart.html', title=title, amount=amount,
-                           search_form=search_form)
+                           search_form=search_form,
+                           latest_reports=latest_reports)
 
 
 @reports.route('/report/order', methods=['GET', 'POST'])
@@ -198,17 +195,14 @@ def new_order():
     """
     form = OrderForm()
     cart_list = session['Order']
-    amount = 0
-    for cart in cart_list:
-        amount += cart['price']
-    # print(cart_list)
+    amount = get_amount(cart_list, "session")
     if form.validate_on_submit():
         for cart in cart_list:
             order = Order(firstname=form.firstname.data,
                           lastname=form.lastname.data,
                           email=form.email.data,
                           report_id=cart['id'],
-                          order_price=cart['price'])
+                          order_price=cart['order_price'])
             # send_email(order) # it should enable to send email
             db.session.add(order)
         db.session.commit()
@@ -225,25 +219,24 @@ def new_order():
 def show_orders():
     """
     To show orders
-    :return: render orders.html, title, orders, reports, amount
+    :return: render orders.html, title, orders, reports, amount, latest_reports
     """
     page = request.args.get('page', 1, type=int)
     orders = Order.query.order_by(Order.date_order.desc()).paginate(
         page=page, per_page=20)
 
     reports_amount = Order.query.all()
-    amount = 0
-    for i in reports_amount:
-        amount += i.order_price
+    amount = get_amount(reports_amount, "order")
 
     ## internal use
     # for i in range(1, 5):
     #     orders = Order.query.get_or_404(str(i))
     #     db.session.delete(orders)
     #     db.session.commit()
-
+    latest_reports = get_latest_reports()
     return render_template('orders.html', title='Orders', orders=orders,
-                           reports=reports, amount=amount)
+                           reports=reports, amount=amount,
+                           latest_reports=latest_reports)
 
 
 @reports.route('/orders/<int:report_id>')

@@ -39,11 +39,13 @@ def create_app(config_class=Config):
     from docmanage.reports.routes import reports
     from docmanage.sub_menu.routes import sub_menu
     from docmanage.contacts.routes import contacts
+    from docmanage.errors.handlers import errors
 
     app.register_blueprint(main)
     app.register_blueprint(users)
     app.register_blueprint(reports)
     app.register_blueprint(sub_menu)
     app.register_blueprint(contacts)
+    app.register_blueprint(errors)
 
     return app

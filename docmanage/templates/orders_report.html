@@ -3,8 +3,8 @@
 {% if current_user.is_authenticated %}
     {% for report in reports.items %}
     <h2>{{ title }}: {{ report.title }} </h2>
-    <article class="media content-section">
-        <table class="table table-bordered table-hover">
+    {# <article class="media content-section"> #}
+        <table class="table table-bordered table-hover myTable">
             <thead>
             <tr bgcolor="#00FFFF">
                 <th>First Name</th>
@@ -27,7 +27,7 @@
             {% endfor %}
             </tbody>
         </table>
-    </article>
+    {# </article> #}
     {% for page_num in reports.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
     {% if page_num %}
         {% if reports.page == page_num %}
