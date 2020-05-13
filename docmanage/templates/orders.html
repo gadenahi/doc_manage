@@ -2,14 +2,12 @@
 {% block content %}
 {% if current_user.is_authenticated %}
     <h2>{{ title }} ({{ orders.total }}) </h2>
-   {# <article class="media content-section"> #}
         <table class="table table-bordered table-hover myTable">
             <thead>
             <tr bgcolor="#00FFFF">
                 <th>Order Id</th>
                 <th>First Name</th>
                 <th>Last Name</th>
-{#                <th>Email</th> #}
                 <th>Report ID</th>
                 <th>Order Date</th>
                 <th>Order Price</th>
@@ -21,7 +19,6 @@
                     <td>{{ order.id }}</td>
                     <td>{{ order.firstname }}</td>
                     <td>{{ order.lastname }}</td>
-{#                    <td>{{ order.email }}</td> #}
                     <td><a class="archive-title" href="{{ url_for('reports.show_orders_report', report_id=order.report_id) }}">{{ order.report_id }}</a></td>
                     <td>{{ order.date_order.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                     <td> ${{ "{:,d}".format(order.order_price) }}</td>
@@ -29,13 +26,12 @@
             {% endfor %}
             </tbody>
         </table>
-    {# </article> #}
-            <table class="table table-bordered table-hover">
-                <tr>
-                    <th>Total</th>
-                    <td>${{ "{:,d}".format(amount) }}</td>
-                </tr>
-            </table>
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>Total</th>
+                <td>${{ "{:,d}".format(amount) }}</td>
+            </tr>
+        </table>
     {% for page_num in orders.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
     {% if page_num %}
         {% if orders.page == page_num %}

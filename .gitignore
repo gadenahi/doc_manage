@@ -4,4 +4,4 @@ static/report_pdfs
 *.pdf
 *.docx
 .idea/
-sub_menu/test_analyze.py
+analytics/utils_copy.py

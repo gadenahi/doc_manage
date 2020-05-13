@@ -15,7 +15,7 @@ def search():
     q = request.args.get('search', '')  # name attribute on HTML
     search_form = SearchForm()
     page = request.args.get('page', 1, type=int)
-    results = Report.query.msearch(q).paginate(page=page, per_page=20)
+    results = Report.query.msearch(q).paginate(page=page, per_page=100)
     return render_template('home.html', title="result:" + q,
                            reports=results, search_form=search_form, q=q)
 

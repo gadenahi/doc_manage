@@ -79,8 +79,10 @@ body {
     font-size: 2.5rem;
   }
 
-  .archive-recent-posts {
-    border: 1px solid #dddddd;
+  .archive-recent-reports {
+    margin-top: 10px;
+    color: #444444;
+    text-decoration: underline;
   }
 
   .archive-month-archive {
@@ -125,4 +127,12 @@ body {
     margin-top: 10px;
     color: #444444;
     text-decoration: underline;
+  }
+
+  .filter-date {
+    text-align: right;
+  }
+
+  table {
+  text-align: center;
   }

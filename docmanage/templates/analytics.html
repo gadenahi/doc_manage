@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if current_user.is_authenticated %}
+<form action= "{{ url_for('analytics.analize') }}" method="POST">
+    <h2>{{ title }} </h2>
+    <div class="form-group filter-date">
+        <select class="select-filter" name="byDate" method="GET" action="/">
+            {% for byDate in byDates %}
+                {% if sel_tvalue == byDate %}
+                    <option value="{{ byDate }}" selected="'selected">{{ byDate }}</option>
+                {% else %}
+                    <option value="{{ byDate }}">{{ byDate }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <input class="btn btn-outline-info" type="submit" value="Submit" />
+    </div>
+     <article class="media content-section">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr bgcolor="#00FFFF">
+                <th>Year</th>
+                {% if sel_tvalue == "month" or sel_tvalue == 'day' %}
+                <th>Month</th>
+                {% endif %}
+                {% if sel_tvalue == 'day' %}
+                <th>Day</th>
+                {% endif %}
+                <th>Total Orders</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for response in resAnalyzeDatas %}
+                    <tr>
+                        <td>{{ response['year'] }}</td>
+                    {% if sel_tvalue == "month" or sel_tvalue == 'day' %}
+                        <td>{{ response['month'] }}</td>
+                    {% endif %}
+                    {% if sel_tvalue == "day" %}
+                        <td>{{ response['day'] }}</td>
+                    {% endif %}
+                        <td>${{ "{:,d}".format(response['order_price']) }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </article>
+    <article>
+        <img src="{{ url_for('static', filename='images/' + plt_name) }}" alt="Chart" height="auto" width="100%">
+    </article>
+</form>
+{% endif %}
+{% endblock content %}

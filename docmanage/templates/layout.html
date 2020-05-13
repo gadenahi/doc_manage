@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" crossorigin="anonymous">
-
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon.ico') }}">
     {% if title %}
-        <title>Market Report - {{ title}} </title>
+        <title>Market Report - {{ title }} </title>
     {% else %}
         <title>Market Report</title>
     {% endif %}
@@ -38,8 +35,7 @@
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
                         {% if current_user.is_authenticated %}
-
-{#                            <a class="nav-item nav-link" href="{{ url_for('reports.management')}}">Report Management</a> #}
+                            <a class="nav-item nav-link" href="{{ url_for('analytics.analize')}}">Orders Analytics</a>
                             <a class="nav-item nav-link" href="{{ url_for('reports.show_orders')}}">Orders</a>
                             <a class="nav-item nav-link" href="{{ url_for('reports.new_report')}}">New Report</a>
                             <a class="nav-item nav-link" href="{{ url_for('users.account')}}">Account</a>
@@ -48,7 +44,6 @@
                             <a class="nav-item nav-link" href="{{ url_for('users.login')}}">Login</a>
                             <a class="nav-item nav-link" href="{{ url_for('users.register')}}">Register</a>
                         {% endif %}
-
                     </div>
                 </div>
             </div>
@@ -76,21 +71,8 @@
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-
-    <script>
-    $(document).ready( function () {
-        $('.myTable').DataTable({
-        'rowCallback': function(row, data, index) {
-        if (data[0].indexOf('Draft') != -1) {
-            $(row).find('td').css('background-color', '#ffffc0');
-        }
-        }
-        });
-    } );
-    </script>
-{# https://datatables.net/ #}
+    <script src="/static/js/handle_table.js"></script>
 </body>
 </html>
 

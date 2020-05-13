@@ -2,7 +2,6 @@ from flask import render_template, request, Blueprint
 from docmanage.models import Report
 from docmanage.sub_menu.forms import SearchForm
 from docmanage.sub_menu.utils import get_latest_reports
-from docmanage.sub_menu.test_analyze import test_pandas
 
 main = Blueprint('main', __name__)
 
@@ -17,9 +16,10 @@ def home():
     search_form = SearchForm()
     page = request.args.get('page', 1, type=int)
     reports = Report.query.order_by(Report.date_posted.desc()).paginate(
-        page=page, per_page=20)
+        page=page, per_page=100)
     latest_reports = get_latest_reports()
-    test_pandas()
+    tableData = request.form.get("DataTables_Table_0_length")
+    print("tableData", tableData)
     return render_template('home.html', title="Market Report List",
                            reports=reports, search_form=search_form,
                            latest_reports=latest_reports)

@@ -223,7 +223,7 @@ def show_orders():
     """
     page = request.args.get('page', 1, type=int)
     orders = Order.query.order_by(Order.date_order.desc()).paginate(
-        page=page, per_page=20)
+        page=page, per_page=100)
 
     reports_amount = Order.query.all()
     amount = get_amount(reports_amount, "order")
@@ -249,7 +249,8 @@ def show_orders_report(report_id):
     """
     page = request.args.get('page', 1, type=int)
     reports = Report.query.filter_by(id=report_id).paginate(
-        page=page, per_page=20)
-
+        page=page, per_page=100)
+    reports_amount = Order.query.filter_by(report_id=report_id).all()
+    amount = get_amount(reports_amount, "order")
     return render_template('orders_report.html', title='Orders by report',
-                           reports=reports, report_id=report_id)
+                           reports=reports, report_id=report_id, amount=amount)

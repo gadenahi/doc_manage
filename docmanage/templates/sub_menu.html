@@ -26,7 +26,7 @@
         <article class="media archive-section">
             <div class="media-body">
                 <div class="article-metadata">
-                    <h5><a class="archive-title" href="{{ url_for('reports.report', report_id=l_report.id) }}">{{ l_report.title }}</a></h5>
+                    <h5><a class="archive-recent-reports" href="{{ url_for('reports.report', report_id=l_report.id) }}">{{ l_report.title }}</a></h5>
                     <small class="text-muted">{{ l_report.date_published.strftime('%Y-%m-%d') }}</small>
                     <p>{{ l_report.summary }}</p>
                 </div>
