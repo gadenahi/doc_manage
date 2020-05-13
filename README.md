@@ -6,12 +6,14 @@ This is a project for report shopping site using:
 - Flask 1.1
 - SQLAlchemy
 - Flake8
+- Matplotlib
 
 This site provides:
 - Upload the report 
 - Report sells
 - Orders counts
 - Orders details
+- Orders Analytics
 
 ## Run
 run.py
