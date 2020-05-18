@@ -172,16 +172,17 @@ def show_cart():
     To show cart
     :return: render cart.html, title, amount, search_form, latest_reports
     """
-    amount = 0
+    summary = 0
     search_form = SearchForm()
     if 'Order' in session and len(session['Order']) != 0:
         cart_list = session['Order']
-        amount = get_amount(cart_list, 'session')
+
+        summary = get_amount(cart_list, 'session')
         title = 'Cart'
     else:
         title = 'Cart(Empty)'
     latest_reports = get_latest_reports()
-    return render_template('cart.html', title=title, amount=amount,
+    return render_template('cart.html', title=title, summary=summary,
                            search_form=search_form,
                            latest_reports=latest_reports)
 
@@ -195,7 +196,8 @@ def new_order():
     """
     form = OrderForm()
     cart_list = session['Order']
-    amount = get_amount(cart_list, "session")
+    summary = get_amount(cart_list, "session")
+
     if form.validate_on_submit():
         for cart in cart_list:
             order = Order(firstname=form.firstname.data,
@@ -211,7 +213,7 @@ def new_order():
         return redirect(url_for('main.home'))
 
     return render_template('order.html', title='Order', form=form,
-                           legend='Order', amount=amount)
+                           legend='Order', summary=summary)
 
 
 @reports.route('/orders')
@@ -226,8 +228,7 @@ def show_orders():
         page=page, per_page=100)
 
     reports_amount = Order.query.all()
-    amount = get_amount(reports_amount, "order")
-
+    summary = get_amount(reports_amount, "order")
     ## internal use
     # for i in range(1, 5):
     #     orders = Order.query.get_or_404(str(i))
@@ -235,9 +236,8 @@ def show_orders():
     #     db.session.commit()
     latest_reports = get_latest_reports()
     return render_template('orders.html', title='Orders', orders=orders,
-                           reports=reports, amount=amount,
+                           reports=reports, summary=summary,
                            latest_reports=latest_reports)
-
 
 @reports.route('/orders/<int:report_id>')
 @login_required
@@ -251,6 +251,6 @@ def show_orders_report(report_id):
     reports = Report.query.filter_by(id=report_id).paginate(
         page=page, per_page=100)
     reports_amount = Order.query.filter_by(report_id=report_id).all()
-    amount = get_amount(reports_amount, "order")
+    summary = get_amount(reports_amount, "order")
     return render_template('orders_report.html', title='Orders by report',
-                           reports=reports, report_id=report_id, amount=amount)
+                           reports=reports, report_id=report_id, summary=summary)

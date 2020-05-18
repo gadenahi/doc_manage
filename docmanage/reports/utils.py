@@ -39,4 +39,11 @@ def get_amount(data, req):
     elif req == "order":
         df = pd.DataFrame([d.order_price for d in data],
                           columns=["order_price"])
-    return df['order_price'].sum()
+
+    summary = dict()
+    summary['amount'] = df['order_price'].sum()
+    summary['average'] = int(df['order_price'].mean())
+    summary['count'] = df['order_price'].count()
+
+    # return df['order_price'].sum()
+    return summary

@@ -15,36 +15,29 @@
         </select>
         <input class="btn btn-outline-info" type="submit" value="Submit" />
     </div>
-     <article class="media content-section">
-        <table class="table table-bordered table-hover">
+    <fieldset class="form-group">
+    <legend class="border-bottom mb-4"> {{ legend }}</legend>
+        <table class="table table-bordered table-hover myTable">
             <thead>
             <tr bgcolor="#00FFFF">
-                <th>Year</th>
-                {% if sel_tvalue == "month" or sel_tvalue == 'day' %}
-                <th>Month</th>
-                {% endif %}
-                {% if sel_tvalue == 'day' %}
-                <th>Day</th>
-                {% endif %}
-                <th>Total Orders</th>
+                <th>Date</th>
+                <th>Sum</th>
+                <th>Mean</th>
+                <th>Count</th>
             </tr>
             </thead>
             <tbody>
                 {% for response in resAnalyzeDatas %}
                     <tr>
-                        <td>{{ response['year'] }}</td>
-                    {% if sel_tvalue == "month" or sel_tvalue == 'day' %}
-                        <td>{{ response['month'] }}</td>
-                    {% endif %}
-                    {% if sel_tvalue == "day" %}
-                        <td>{{ response['day'] }}</td>
-                    {% endif %}
-                        <td>${{ "{:,d}".format(response['order_price']) }}</td>
+                        <td>{{ response['date'] }}</td>
+                        <td>${{ "{:,d}".format(response['sum']) }}</td>
+                        <td>${{ "{:,d}".format(response['mean']) }}</td>
+                        <td>{{ response['count'] }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-    </article>
+    </fieldset>
     <article>
         <img src="{{ url_for('static', filename='images/' + plt_name) }}" alt="Chart" height="auto" width="100%">
     </article>

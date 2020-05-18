@@ -29,7 +29,11 @@
         <table class="table table-bordered table-hover">
             <tr>
                 <th>Total</th>
-                <td>${{ "{:,d}".format(amount) }}</td>
+                <td>${{ "{:,d}".format(summary['amount']) }}</td>
+                <th>Average</th>
+                <td>${{ "{:,d}".format(summary['average']) }}</td>
+                <th>Count</th>
+                <td>{{ "{:,d}".format(summary['count']) }}</td>
             </tr>
         </table>
     {% for page_num in reports.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}

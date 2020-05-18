@@ -47,3 +47,4 @@ Werkzeug==0.16.0
 Whoosh==2.7.4
 wrapt==1.12.1
 WTForms==2.2.1
+xarray==0.15.1
