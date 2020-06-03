@@ -133,6 +133,6 @@ body {
     text-align: right;
   }
 
-  table {
-  text-align: center;
+  table tr td {
+  word-break: break-all;
   }

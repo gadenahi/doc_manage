@@ -1,6 +1,7 @@
 import os
 from docmanage.models import Order
 from flask import current_app
+import calendar
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -32,12 +33,13 @@ def analyze_data_draw(bydates):
     # cal the data for tables
     result = []
     for i, j in df_mod.iterrows():
-        result.append({
-            'date': i.strftime(strfInput),
-            'sum': int(j['order_price']['sum']),
-            'mean': int(j['order_price']['mean']),
-            'count': int(j['order_price']['count'])
-        })
+        if int(j['order_price']['sum']) > 0:
+            result.append({
+                'date': i.strftime(strfInput),
+                'sum': int(j['order_price']['sum']),
+                'mean': int(j['order_price']['mean']),
+                'count': int(j['order_price']['count'])
+            })
     # its mandatory to use it for matplotlib
     # https://github.com/dghoshal-lbl/dac-man/commit/d085b9a334ee98ff4982babb11923f8c1e9eca77
     plt.switch_backend('agg')
@@ -45,7 +47,8 @@ def analyze_data_draw(bydates):
     # use the style of grid and gray highlighted color
     plt.style.use('ggplot')
     # format fro datetime to Y-M-D
-    df_mod.index = df_mod.index.format()
+    # df_mod.index = df_mod.index.format()
+    df_mod.index = df_mod.index.strftime(strfInput)
     # set the plot information
     axes = df_mod.plot(kind='bar', figsize=(10, 10), subplots=True,
                        layout=(3, 1), legend=False, color=['lightblue'],
@@ -95,3 +98,14 @@ def analyze_data_draw(bydates):
 """
 
 
+"""
+    start = datetime(year=int(year), month=int(start_month), day=1)
+    # To get the last date by month automatically
+    last_day = calendar.monthrange(int(year), int(start_month))[1]
+    # To set the end date for the filter
+    end = datetime(year=int(year), month=int(end_month), day=int(last_day))
+    posts = Post.query.filter(Post.date_posted <= end)\
+        .filter(Post.date_posted >= start)\
+        .order_by(Post.date_posted.desc())\
+        .paginate(page=page, per_page=5)
+"""

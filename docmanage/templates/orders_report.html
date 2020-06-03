@@ -3,23 +3,23 @@
 {% if current_user.is_authenticated %}
     {% for report in reports.items %}
     <h2>{{ title }}: {{ report.title }} </h2>
-        <table class="table table-bordered table-hover myTable">
+        <table class="table table-bordered table-hover ordersbyTable">
             <thead>
             <tr bgcolor="#00FFFF">
+                <th>Order Date</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
-                <th>Order Date</th>
                 <th>Order Price</th>
             </tr>
             </thead>
             <tbody>
                 {% for r in report.order %}
                 <tr>
+                    <td>{{ r.date_order.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                     <td>{{ r.firstname }}</td>
                     <td>{{ r.lastname }}</td>
                     <td>{{ r.email }}</td>
-                    <td>{{ r.date_order.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                     <td> ${{ "{:,d}".format(r.order_price) }}</td>
                 </tr>
                 {% endfor %}

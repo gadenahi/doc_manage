@@ -23,8 +23,8 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarToggle">
                     <div class="navbar-nav mr-auto">
-                        <a class="nav-item nav-link" href="/">Home</a>
-                        <a class="nav-item nav-link" href="/about">About</a>
+                        <a class="nav-item nav-link" href="{{ url_for('main.home') }}">Home</a>
+                        <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
                         <a class="nav-item nav-link" href="{{ url_for('contacts.new_contact') }}">Contact</a>
                         {% if session.Order %}
                         <a class="nav-item nav-link" href="{{ url_for('reports.show_cart') }}">Cart <font color="#FFA500">({{ session.get('Order')|length }})</font></a>

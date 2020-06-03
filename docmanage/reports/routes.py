@@ -24,8 +24,10 @@ def new_report():
     if form.validate_on_submit():
         report = Report(title=form.title.data,
                         date_published=form.date_published.data,
-                        summary=form.summary.data,
-                        table=form.table.data,
+                        summary=form.summary.data.replace('\r', '<br>'),
+                        table=form.table.data.replace('\r', '<br>'),
+                        # table=form.table.data,
+                        # https://qiita.com/gacky35/items/8498176ee80d6b6ce014
                         content=form.content.data,
                         author=form.content.data,
                         price=form.price.data,
@@ -71,8 +73,8 @@ def update_report(report_id):
     if form.validate_on_submit():
         report.title = form.title.data
         report.date_published = form.date_published.data
-        report.summary = form.summary.data
-        report.table = form.table.data
+        report.summary = form.summary.data.replace('\r', '<br>')
+        report.table = form.table.data.replace('\r', '<br>')
         report.content = form.content.data
         report.author = form.author.data
         report.price = form.price.data

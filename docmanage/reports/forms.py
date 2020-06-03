@@ -33,17 +33,17 @@ class ReportForm(FlaskForm):
     table = TextAreaField(
         'Table of Content',
         validators=[DataRequired()],
-        render_kw={"placeholder": "1. The purpose of report"}
+        render_kw={"placeholder": "e.g. 1. The purpose of report"}
     )
     content = TextAreaField(
         'Content',
         validators=[DataRequired()],
-        render_kw={"placeholder": "Describe the detail if necessary"}
+        render_kw={"placeholder": "Describe the detail"}
     )
     author = TextAreaField(
         'Author',
         validators=[DataRequired()],
-        render_kw={"placeholder": "Mike, Cal"}
+        render_kw={"placeholder": "Last name First name"}
     )
     price = IntegerField(
         'Price($)',

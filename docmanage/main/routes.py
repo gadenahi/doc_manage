@@ -18,8 +18,8 @@ def home():
     reports = Report.query.order_by(Report.date_posted.desc()).paginate(
         page=page, per_page=100)
     latest_reports = get_latest_reports()
-    tableData = request.form.get("DataTables_Table_0_length")
-    print("tableData", tableData)
+    # tableData = request.form.get("DataTables_Table_0_length")
+    # print("tableData", tableData)
     return render_template('home.html', title="Market Report List",
                            reports=reports, search_form=search_form,
                            latest_reports=latest_reports)
