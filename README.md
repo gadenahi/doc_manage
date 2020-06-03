@@ -5,7 +5,6 @@ This is a project for report shopping site using:
 - Python3
 - Flask 1.1
 - SQLAlchemy
-- Flake8
 - Matplotlib
 
 This site provides:
