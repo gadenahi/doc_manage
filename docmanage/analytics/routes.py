@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request, url_for
+from flask import render_template, Blueprint, request, url_for, redirect
 from docmanage.analytics.utils import analyze_data_draw
 from flask import current_app
 import os
@@ -16,14 +16,20 @@ def analize():
     """
     byDates = ['year', 'month', 'day']
     # To get the value of select
-    byDate = request.form.get("byDate")
-    if byDate is None:
+    sel_tvalue = request.form.get("byDate")
+    if sel_tvalue is None:
         sel_tvalue = 'year'
-    else:
-        sel_tvalue= byDate
+
+    # didn't use
+    # To get the select byDates by get_select_data.js
+    # sel_tvalue = request.args.get('filter_date', None)
+    # if sel_tvalue is None:
+    #     sel_tvalue = 'year'
+
     # To get the analized data by byDate and plt_name
     resAnalyzeDatas, plt_name = analyze_data_draw(sel_tvalue)
     legend = 'Orders by ' + sel_tvalue
+
     return render_template('analytics.html', title='Orders Analytics',
                            byDates=byDates, sel_tvalue=sel_tvalue,
                            resAnalyzeDatas=resAnalyzeDatas, plt_name=plt_name,
