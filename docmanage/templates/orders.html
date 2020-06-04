@@ -18,7 +18,8 @@
                 <tr>
                     <td>{{ order.date_order.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                     <td>{{ order.id }}</td>
-                    <td>{{ order.firstname }}</td>
+{#                    <td>{{ order.firstname }}</td> #}
+                    <td><a class="archive-title" href="{{ url_for('reports.show_orders_user', email=order.email) }}">{{ order.firstname }}</a></td>
                     <td>{{ order.lastname }}</td>
                     <td><a class="archive-title" href="{{ url_for('reports.show_orders_report', report_id=order.report_id) }}">{{ order.report_id }}</a></td>
                     <td> ${{ "{:,d}".format(order.order_price) }}</td>

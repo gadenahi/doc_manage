@@ -241,7 +241,7 @@ def show_orders():
                            reports=reports, summary=summary,
                            latest_reports=latest_reports)
 
-@reports.route('/orders/<int:report_id>')
+@reports.route('/orders/report/<int:report_id>')
 @login_required
 def show_orders_report(report_id):
     """
@@ -256,3 +256,23 @@ def show_orders_report(report_id):
     summary = get_amount(reports_amount, "order")
     return render_template('orders_report.html', title='Orders by report',
                            reports=reports, report_id=report_id, summary=summary)
+
+@reports.route('/orders/user/<string:email>')
+@login_required
+def show_orders_user(email=None):
+    """
+    To show orders by user
+    :param: email
+    :return: render orders_user.html, title, reports, email, summary
+    """
+    page = request.args.get('page', 1, type=int)
+    reports = Order.query.filter_by(email=email).paginate(
+        page=page, per_page=100)
+    reports_amount = Order.query.filter_by(email=email).all()
+    for r in reports_amount:
+        lastname = r.lastname
+        firstname = r.firstname
+    summary = get_amount(reports_amount, "order")
+    return render_template('orders_user.html', title='Orders by user',
+                           reports=reports, email=email, firstname=firstname,
+                           lastname=lastname, summary=summary)
