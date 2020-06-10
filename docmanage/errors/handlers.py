@@ -22,7 +22,7 @@ def error_403(error):
     :param error: error code
     :return: render 404.html and error code
     """
-    return render_template('errors/403.tml'), 403
+    return render_template('errors/403.html'), 403
 
 
 @errors.app_errorhandler(500)
@@ -32,4 +32,4 @@ def error_500(error):
     :param error: error code
     :return: render 500.html and error code
     """
-    return render_template('errors/500.tml'), 500
+    return render_template('errors/500.html'), 500

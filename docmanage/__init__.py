@@ -9,6 +9,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_msearch import Search
 from flask_mail import Mail
+from flask_admin import Admin
 
 
 db = SQLAlchemy()
@@ -17,6 +18,15 @@ login_manager = LoginManager()
 login_manager.login_view = 'users.login'  # setting for login route
 login_manager.login_message_category = 'info'
 mail = Mail()
+
+
+def admin_control(app):
+    from docmanage.admincc.admincontrol import MyAdminIndexView, MyModelView
+    from docmanage.models import User, Report, Order
+    adminCC = Admin(app, index_view=MyAdminIndexView())
+    adminCC.add_view(MyModelView(User, db.session))
+    adminCC.add_view(MyModelView(Report, db.session))
+    adminCC.add_view(MyModelView(Order, db.session))
 
 
 def create_app(config_class=Config):
@@ -50,4 +60,8 @@ def create_app(config_class=Config):
     app.register_blueprint(errors)
     app.register_blueprint(analytics)
 
+    admin_control(app)
+
     return app
+
+

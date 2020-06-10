@@ -3,6 +3,7 @@ from docmanage.models import Report
 from docmanage.sub_menu.forms import SearchForm
 from docmanage.sub_menu.utils import get_latest_reports
 
+
 main = Blueprint('main', __name__)
 
 
