@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Report Market</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}"/>
+</head>
+<body>
+    <h3> Thank you for your order of Market Report </h3>
+    <p> Here is the order summary below. We will contact you soon</p>
+    <article class="media content-section">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr bgcolor="#00FFFF">
+                    <th>Report Title</th>
+                    <th>Price</th>
+                    <th>QTY</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cart in cart_list %}
+                <tr>
+                    <td>{{ cart.title }}</a></td>
+                    <td>${{ "{:,d}".format(cart.order_price) }}</td>
+                    <td>{{ cart.qty }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>Total: </th>
+                <td>${{ "{:,d}".format(summary['amount']) }}</td>
+            </tr>
+            <tr>
+                <th>First Name: </th>
+                <td>{{ user.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Last Name: </th>
+                <td>{{ user.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Email: </th>
+                <td>{{ user.email }}</td>
+            </tr>
+        </table>
+    </article>
+</body>
+</html>

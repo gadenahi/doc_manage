@@ -13,8 +13,7 @@
             </thead>
             <tbody>
             {% for report in reports.items %}
-
-                {% if current_user.is_authenticated and report.status=="0" %}
+                {% if current_user.is_authenticated and current_user.is_admin() and report.status=="0" %}
                     <tr>
                         <td><a class="archive-title" href="{{ url_for('reports.report', report_id=report.id) }}">{{ report.title}} (Draft)</a></td>
                         <td>{{ report.summary }}</td>
@@ -29,7 +28,6 @@
                         <td> ${{ "{:,d}".format(report.price) }}</td>
                     </tr>
                 {% endif %}
-
             {% endfor %}
             </tbody>
         </table>

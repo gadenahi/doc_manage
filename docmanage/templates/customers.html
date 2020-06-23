@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if current_user.is_admin() %}
+    <h2>{{ title }} ({{ customers.total }}) </h2>
+        <table class="table table-bordered table-hover ordersTable">
+            <thead>
+            <tr bgcolor="#00FFFF">
+                <th>Customer ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Company Name</th>
+                <th>Job Title</th>
+                <th>Country</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for customer in customers.items %}
+            <tr>
+                <td>{{ customer.id }}</td>
+                <td>{{ customer.firstname }}</td>
+                <td>{{ customer.lastname }}</td>
+                <td>{{ customer.company }}</td>
+                <td>{{ customer.jobtitle }}</td>
+                <td>{{ customer.country_name(customer.country_id) }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% for page_num in customers.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if page_num %}
+        {% if customers.page == page_num %}
+            <a class="btn btn-info mb-4" href="{{ url_for('reports.show_customers', page=page_num) }}">{{ page_num }}</a>
+        {% else%}
+            <a class="btn btn-outline-info mb-4" href="{{ url_for('reports.show_customers', page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+    {% else %}
+        ...
+    {% endif %}
+    {% endfor %}
+{% endif %}
+{% endblock content %}

@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-{% if current_user.is_authenticated %}
+{% if current_user.is_authenticated and current_user.is_admin() %}
 <form action= "{{ url_for('analytics.analize') }}" method="POST" id="submit_form">
     <h2>{{ title }} </h2>
     <div class="form-group filter-date">
@@ -13,7 +13,6 @@
                 {% endif %}
             {% endfor %}
         </select>
-{#        <input class="btn btn-outline-info" type="submit" value="Submit" /> #}
     </div>
     <fieldset class="form-group">
     <legend class="border-bottom mb-4"> {{ legend }}</legend>
@@ -27,6 +26,7 @@
             </tr>
             </thead>
             <tbody>
+                {% if resAnalyzeDatas %}
                 {% for response in resAnalyzeDatas %}
                     <tr>
                         <td>{{ response['date'] }}</td>
@@ -35,11 +35,14 @@
                         <td>{{ response['count'] }}</td>
                     </tr>
                 {% endfor %}
+                {% endif %}
             </tbody>
         </table>
     </fieldset>
     <article>
+        {% if plt_name %}
         <img src="{{ url_for('static', filename='images/' + plt_name) }}" alt="Chart" height="auto" width="100%">
+        {% endif %}
     </article>
 </form>
 {% endif %}

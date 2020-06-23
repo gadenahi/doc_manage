@@ -58,32 +58,6 @@
                 {% endif %}
             </div>
             <div class="form-group">
-                {{ form.content.label(class="form-control-label") }}
-                {% if form.content.errors %}
-                    {{ form.content(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.content.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.content(class="form-control form-control-lg") }}
-                {% endif %}
-            </div>
-            <div class="form-group">
-                {{ form.author.label(class="form-control-label") }}
-                {% if form.author.errors %}
-                    {{ form.author(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.author.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.author(class="form-control form-control-lg") }}
-                {% endif %}
-            </div>
-            <div class="form-group">
                 {{ form.price.label(class="form-control-label") }}
                 {% if form.price.errors %}
                     {{ form.price(class="form-control form-control-lg is-invalid") }}
@@ -117,14 +91,12 @@
             <div class="form-group">
                 {{ form.pdf.label() }}
                 <div class="border">
-                {% if title=='Update Report' %}
+                {% if title=='Update Report' and pdf_file%}
                 <a class="article-title" href="{{ pdf_file }}">Current_File: {{ form.title(disabled=True)}}</a>
                 <br/>
                 <br/>
                 {% endif %}
                 {{ form.pdf(class="form-control-file") }}
-                {% if pdf_file %}
-                {% endif %}
                 {% if form.pdf.errors %}
                     {% for error in form.pdf.errors %}
                         <span class="text-danger">{{ error }}</span><br/>

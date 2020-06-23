@@ -136,3 +136,12 @@ body {
   table tr td {
   word-break: break-all;
   }
+
+  .dropdown-menu {
+    background-color: #5f788a;
+    width: 200px;
+
+  }
+  .dropdown-item {
+    color: #cbd5db;
+  }

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email
 
 
@@ -8,28 +8,29 @@ class ContactForm(FlaskForm):
     Form for contact site
     """
     firstname = StringField(
-        'Firstname',
+        'First Name',
         validators=[DataRequired(), Length(min=2, max=20)],
-        render_kw={"placeholder": "Enter your first name"}
+        render_kw={"placeholder": "First Name"}
     )
     lastname = StringField(
-        'Lastname',
+        'Last Name',
         validators=[DataRequired(), Length(min=2, max=20)],
-        render_kw={"placeholder": "Enter your last name"}
+        render_kw={"placeholder": "Last Name"}
     )
     email = StringField(
         'Email',
-        validators=[DataRequired(), Email()]
+        validators=[DataRequired(), Email()],
+        render_kw = {"placeholder": "Email"}
     )
     subject = StringField(
         'Subject',
         validators=[DataRequired(), Length(min=2, max=30)],
-        render_kw={"placeholder": "What's is your purpose"}
+        render_kw={"placeholder": "Your Subject"}
     )
-    message = StringField(
+    message = TextAreaField(
         'Message',
-        validators=[DataRequired(), Length(min=2, max=30)],
-        render_kw={"placeholder": "Please describe the detail"}
+        validators=[DataRequired(), Length(min=2, max=200)],
+        render_kw={"placeholder": "Your Message"}
     )
     submit = SubmitField('Send')
 

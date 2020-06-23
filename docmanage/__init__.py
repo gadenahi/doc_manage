@@ -4,12 +4,12 @@ blueprint
 """
 from docmanage.config import Config
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_admin import Admin
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_msearch import Search
 from flask_mail import Mail
-from flask_admin import Admin
+from flask_sqlalchemy import SQLAlchemy
 
 
 db = SQLAlchemy()
@@ -22,11 +22,15 @@ mail = Mail()
 
 def admin_control(app):
     from docmanage.admincc.admincontrol import MyAdminIndexView, MyModelView
-    from docmanage.models import User, Report, Order
+    from docmanage.models import User, Report, Order, Country, Role
     adminCC = Admin(app, index_view=MyAdminIndexView())
     adminCC.add_view(MyModelView(User, db.session))
     adminCC.add_view(MyModelView(Report, db.session))
     adminCC.add_view(MyModelView(Order, db.session))
+    adminCC.add_view(MyModelView(Country, db.session))
+    adminCC.add_view(MyModelView(Role, db.session))
+
+
 
 
 def create_app(config_class=Config):
@@ -36,11 +40,13 @@ def create_app(config_class=Config):
     :return: application initiate and blueprint mapping
     """
     app = Flask(__name__)
+
     app.config.from_object(config_class)
     search = Search()
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
+
     search.init_app(app)
     mail.init_app(app)
 
@@ -63,5 +69,3 @@ def create_app(config_class=Config):
     admin_control(app)
 
     return app
-
-

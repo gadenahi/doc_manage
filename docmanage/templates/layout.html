@@ -26,7 +26,7 @@
                         <a class="nav-item nav-link" href="{{ url_for('main.home') }}">Home</a>
                         <a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
                         <a class="nav-item nav-link" href="{{ url_for('contacts.new_contact') }}">Contact</a>
-                        {% if session.Order %}
+                        {% if session.Order and current_user.is_authenticated%}
                         <a class="nav-item nav-link" href="{{ url_for('reports.show_cart') }}">Cart <font color="#FFA500">({{ session.get('Order')|length }})</font></a>
                         {% else %}
                         <a class="nav-item nav-link" href="{{ url_for('reports.show_cart') }}">Cart</a>
@@ -34,16 +34,29 @@
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
-                        {% if current_user.is_authenticated %}
-                            <a class="nav-item nav-link" href="{{ url_for('analytics.analize')}}">Orders Analytics</a>
-                            <a class="nav-item nav-link" href="{{ url_for('reports.show_orders')}}">Orders</a>
-                            <a class="nav-item nav-link" href="{{ url_for('reports.new_report')}}">New Report</a>
-                            <a class="nav-item nav-link" href="{{ url_for('users.account')}}">Account</a>
-                            <a class="nav-item nav-link" href="{{ url_for('users.logout')}}">Logout</a>
-                        {% else %}
-                            <a class="nav-item nav-link" href="{{ url_for('users.login')}}">Login</a>
-                            <a class="nav-item nav-link" href="{{ url_for('users.register')}}">Register</a>
-                        {% endif %}
+                       {% if current_user.is_authenticated and current_user.is_admin() %}
+                        <li class="'nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Management
+                            </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="{{ url_for('reports.show_customers')}}">Customers</a>
+                                    <a class="dropdown-item" href="{{ url_for('analytics.analize')}}">Orders Analytics</a>
+                                    <a class="dropdown-item" href="{{ url_for('reports.show_orders')}}">Orders</a>
+                                    <a class="dropdown-item" href="{{ url_for('reports.new_report')}}">New Report</a>
+                                    <a class="dropdown-item" href="{{ url_for('reports.upload_list')}}">Upload Report List</a>
+                                </div>
+                        </li>
+{# https://www.sejuku.net/blog/75948 #}
+                        <a class="nav-item nav-link" href="{{ url_for('users.account')}}">Account</a>
+                        <a class="nav-item nav-link" href="{{ url_for('users.logout')}}">Logout</a>
+                        {% elif current_user.is_authenticated %}
+                        <a class="nav-item nav-link" href="{{ url_for('users.account')}}">Account</a>
+                        <a class="nav-item nav-link" href="{{ url_for('users.logout')}}">Logout</a>
+                       {% else %}
+                        <a class="nav-item nav-link" href="{{ url_for('users.login')}}">Login</a>
+                        <a class="nav-item nav-link" href="{{ url_for('users.register')}}">Register</a>
+                       {% endif %}
                     </div>
                 </div>
             </div>
@@ -78,6 +91,7 @@
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="/static/js/handle_table.js"></script>
     <script src="/static/js/get_select_date.js"></script>
+    <script src="/static/js/menu_toggle.js"></script>
 </body>
 </html>
 

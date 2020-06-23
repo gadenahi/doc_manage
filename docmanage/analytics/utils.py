@@ -4,16 +4,17 @@ from flask import current_app
 import calendar
 import pandas as pd
 import matplotlib.pyplot as plt
+from datetime import datetime
 
 
-def analyze_data_draw(bydates):
+def analyze_data_draw(bydates, order_query):
     """
     To summarize the data for table by sum, mean and count, and create and save
     graph
     :param bydates: select options by year, month, or day
     :return: array for table datas and filename of graph
     """
-    order_query = Order.query.all()
+    # order_query = Order.query.all()
     df = pd.DataFrame([[d.order_price, d.date_order] for d in order_query],
                       columns=["order_price", "date_order"])
     # to create multi-index
@@ -29,6 +30,8 @@ def analyze_data_draw(bydates):
         bydate = 'D'
         strfInput = '%Y/%m/%d'
     # aggregated the data by sum, mean and count
+    # print("df", df)
+
     df_mod = round(df.resample(bydate).agg(['sum', 'mean', 'count']))
     # cal the data for tables
     result = []
@@ -98,14 +101,59 @@ def analyze_data_draw(bydates):
 """
 
 
-"""
-    start = datetime(year=int(year), month=int(start_month), day=1)
-    # To get the last date by month automatically
-    last_day = calendar.monthrange(int(year), int(start_month))[1]
-    # To set the end date for the filter
-    end = datetime(year=int(year), month=int(end_month), day=int(last_day))
-    posts = Post.query.filter(Post.date_posted <= end)\
-        .filter(Post.date_posted >= start)\
-        .order_by(Post.date_posted.desc())\
-        .paginate(page=page, per_page=5)
-"""
+def cal_days():
+    """
+    To get and return the data for 30 days of today
+    :return: order_query
+    """
+    today = datetime.today()
+    year = today.year
+    month = today.month
+    last_day = calendar.monthrange(int(year), int(month))[1]
+    start = datetime(year=int(year), month=int(month), day=1)
+    end = datetime(year=int(year), month=int(month), day=last_day)
+    order_query = Order.query.filter(Order.date_order <= end) \
+        .filter(Order.date_order >= start) \
+        .order_by(Order.date_order.desc()) \
+        .all()
+    return order_query
+
+
+def cal_months():
+    """
+    To get and return the data for 30 days of today
+    :return: order_query
+    """
+    today = datetime.today()
+    lastyear = today.year-1
+    thisyear = today.year
+    lastmonth = today.month+1
+    thismonth = today.month
+    last_day = calendar.monthrange(int(thisyear), int(thismonth))[1]
+    start = datetime(year=int(lastyear), month=int(lastmonth), day=1)
+    end = datetime(year=int(thisyear), month=int(thismonth), day=last_day)
+    order_query = Order.query.filter(Order.date_order <= end) \
+        .filter(Order.date_order >= start) \
+        .order_by(Order.date_order.desc()) \
+        .all()
+    return order_query
+
+
+def cal_years():
+    """
+    To get and return the data for 30 days of today
+    :return: order_query
+    """
+    today = datetime.today()
+    lastyear = today.year-9
+    thisyear = today.year
+    lastmonth = today.month+1
+    thismonth = today.month
+    last_day = calendar.monthrange(int(thisyear), int(thismonth))[1]
+    start = datetime(year=int(lastyear), month=int(lastmonth), day=1)
+    end = datetime(year=int(thisyear), month=int(thismonth), day=last_day)
+    order_query = Order.query.filter(Order.date_order <= end) \
+        .filter(Order.date_order >= start) \
+        .order_by(Order.date_order.desc()) \
+        .all()
+    return order_query

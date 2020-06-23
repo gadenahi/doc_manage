@@ -16,19 +16,10 @@
                 <td>{{ report.table | safe }}</td>
             </tr>
             <tr>
-                <th>Content</th>
-                <td>{{ report.content }}</td>
-            </tr>
-            <tr>
-                <th>Author</th>
-                <td>{{ report.author }}</td>
-            </tr>
-            <tr>
                 <th>Price</th>
                 <td> ${{ "{:,d}".format(report.price) }}</td>
             </tr>
-            {# {% if report.manager == current_user %} #}
-            {% if current_user.is_authenticated %}
+            {% if current_user.is_authenticated and current_user.is_admin() %}
             <tr bgcolor="#ffffc0">
                 <th>Status(Internal)</th>
                 {% if report.status =="1" %}
@@ -39,34 +30,38 @@
             </tr>
             <tr bgcolor="#ffffc0">
                 <th>PDF(Internal)</th>
-                <td><a class="archive-title" href="{{ url_for('static', filename='report_pdfs/' + report.pdf_file) }}">{{ report.title}}</a></td>
+                <td>
+                    {% if report.pdf_file %}
+                    <a class="archive-title" href="{{ url_for('static', filename='report_pdfs/' + report.pdf_file) }}">{{ report.title}}</a>
+                    {% endif %}
+                </td>
             </tr>
             {% endif %}
         </table>
     </article>
         <div>
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('reports.add_cart', report_id=report.id) }}">Add Cart</a>
-        {% if current_user.is_authenticated %}
+        {% if current_user.is_authenticated and current_user.is_admin() %}
             <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('reports.update_report', report_id=report.id) }}">Update Report</a>
             <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
         {% endif %}
         </div>
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Delete Report?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Delete Report?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <form action="{{ url_for('reports.delete_report', report_id=report.id) }}" method="POST">
+                            <input class="btn btn-danger" type="submit" value="Delete">
+                        </form>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <form action="{{ url_for('reports.delete_report', report_id=report.id) }}" method="POST">
-                    <input class="btn btn-danger" type="submit" value="Delete">
-                </form>
-                </div>
-            </div>
             </div>
         </div>
 {% endblock content %}

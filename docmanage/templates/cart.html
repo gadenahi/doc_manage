@@ -1,16 +1,16 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% if session.Order %}
+    {% if session.Order and current_user.is_authenticated %}
     <h2>{{ title }} </h2>
     <article class="media content-section">
         <table class="table table-bordered table-hover">
             <thead>
-            <tr bgcolor="#00FFFF">
-                <th>Report Title</th>
-                <th>Price</th>
-                <th>QTY</th>
-                <th></th>
-            </tr>
+                <tr bgcolor="#00FFFF">
+                    <th>Report Title</th>
+                    <th>Price</th>
+                    <th>QTY</th>
+                    <th>Remove From Cart?</th>
+                </tr>
             </thead>
             <tbody>
                 {% for cart in session.get('Order') %}
@@ -24,35 +24,35 @@
                     </tr>
                     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="deleteModalLabel">Delete Report?</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel">Delete Report?</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <form action="{{ url_for('reports.remove_cart', report_id=cart.id) }}" method="POST">
+                                        <input class="btn btn-danger" type="submit" value="Delete">
+                                    </form>
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <form action="{{ url_for('reports.remove_cart', report_id=cart.id) }}" method="POST">
-                                <input class="btn btn-danger" type="submit" value="Delete">
-                            </form>
-                            </div>
-                        </div>
                         </div>
                     </div>
                 {% endfor %}
             </tbody>
         </table>
     </article>
-            <table class="table table-bordered table-hover">
-                <tr>
-                    <th>Total</th>
-                    <td>${{ "{:,d}".format(summary['amount']) }}</td>
-                </tr>
-            </table>
-            <div>
-                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('reports.new_order') }}">Process Payment</a>
-            </div>
+        <table class="table table-bordered table-hover">
+            <tr>
+                <th>Total</th>
+                <td>${{ "{:,d}".format(summary['amount']) }}</td>
+            </tr>
+        </table>
+        <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('reports.new_order') }}">Process Payment</a>
+        </div>
     {% else %}
     <h2>{{ title }} </h2>
     {% endif %}

@@ -1,5 +1,7 @@
-from flask import render_template, Blueprint, request, url_for, redirect
-from docmanage.analytics.utils import analyze_data_draw
+from flask import render_template, Blueprint, request, url_for
+from docmanage.analytics.utils import (analyze_data_draw, cal_days, cal_months,
+                                       cal_years)
+from docmanage.usersaccess.access_control import requires_access_level
 from flask import current_app
 import os
 
@@ -8,6 +10,7 @@ analytics = Blueprint('analytics', __name__)
 
 
 @analytics.route('/analytics', methods=['GET', 'POST'])
+@requires_access_level('admin')
 def analize():
     """
     To analyze the orders data
@@ -26,8 +29,18 @@ def analize():
     # if sel_tvalue is None:
     #     sel_tvalue = 'year'
 
+    # to get data for certain duration by input sel_tvalue
+    if sel_tvalue == 'day':
+        order_query = cal_days()
+    elif sel_tvalue == 'month':
+        order_query = cal_months()
+    else:
+        order_query = cal_years()
     # To get the analized data by byDate and plt_name
-    resAnalyzeDatas, plt_name = analyze_data_draw(sel_tvalue)
+    if len(order_query) != 0:
+        resAnalyzeDatas, plt_name = analyze_data_draw(sel_tvalue, order_query)
+    else:
+        resAnalyzeDatas, plt_name = None, None
     legend = 'Orders by ' + sel_tvalue
 
     return render_template('analytics.html', title='Orders Analytics',

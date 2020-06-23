@@ -1,0 +1,21 @@
+from functools import wraps
+from flask import flash, redirect, session, url_for
+from docmanage.models import User
+
+
+def requires_access_level(access_level):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if not session.get('user_id'):
+                return redirect(url_for('users.login'))
+            user = User.query.filter_by(id=session['user_id']).first()
+            user_role = user.roles[0].rolename
+            if user_role != access_level:
+                flash(("You do not have permission to access"), 'error')
+                return redirect(url_for('main.home'))
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
+

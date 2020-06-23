@@ -1,28 +1,22 @@
 {% extends "layout.html" %}
 {% block content %}
-{% if current_user.is_authenticated %}
-    {% for report in reports.items %}
+{% if current_user.is_authenticated and current_user.is_admin() %}
+    {% for order in orders.items %}
     <h2>{{ title }}: {{ report.title }} </h2>
         <table class="table table-bordered table-hover ordersbyTable">
             <thead>
-            <tr bgcolor="#00FFFF">
-                <th>Order Date</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Order Price</th>
-            </tr>
+                <tr bgcolor="#00FFFF">
+                    <th>Order Date</th>
+                    <th>User ID</th>
+                    <th>Order Price</th>
+                </tr>
             </thead>
             <tbody>
-                {% for r in report.order %}
                 <tr>
-                    <td>{{ r.date_order.strftime('%Y-%m-%d %H:%M:%S') }}</td>
-                    <td>{{ r.firstname }}</td>
-                    <td>{{ r.lastname }}</td>
-                    <td><a class="archive-title" href="{{ url_for('reports.show_orders_user', email=r.email) }}">{{ r.email }}</a></td>
-                    <td> ${{ "{:,d}".format(r.order_price) }}</td>
+                    <td>{{ order.date_order.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                    <td><a class="archive-title" href="{{ url_for('reports.show_orders_user', user_id=order.user_id) }}">{{ order.user_id }}</a></td>
+                    <td> ${{ "{:,d}".format(order.order_price) }}</td>
                 </tr>
-                {% endfor %}
             {% endfor %}
             </tbody>
         </table>
@@ -36,12 +30,12 @@
                 <td>{{ "{:,d}".format(summary['count']) }}</td>
             </tr>
         </table>
-    {% for page_num in reports.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% for page_num in orders.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
     {% if page_num %}
-        {% if reports.page == page_num %}
-            <a class="btn btn-info mb-4" href="{{ url_for('reports.show_orders_report', page=page_num, report_id=report_id) }}">{{ page_num }}</a>
+        {% if orders.page == page_num %}
+            <a class="btn btn-info mb-4" href="{{ url_for('reports.show_orders_report', page=page_num, report_id=report.id) }}">{{ page_num }}</a>
         {% else%}
-            <a class="btn btn-outline-info mb-4" href="{{ url_for('reports.show_orders_report', page=page_num, report_id=report_id) }}">{{ page_num }}</a>
+            <a class="btn btn-outline-info mb-4" href="{{ url_for('reports.show_orders_report', page=page_num, report_id=report.id) }}">{{ page_num }}</a>
         {% endif %}
     {% else %}
         ...

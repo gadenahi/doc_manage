@@ -12,13 +12,13 @@ def send_email(contact):
     :param contact: input from contact form
     :return: None
     """
-    msg = Message('Thank you for your contact from Market Report',
+    msg = Message('Thank you for your orders from Market Report',
                   sender='noreply@demo.com',
                   recipients=[contact.email, config.MAIL_USERNAME])
     msg.body = """
     From: %s %s <%s>
     Object: %s
-    %s
+    Message: %s
     """ % (contact.firstname, contact.lastname, contact.email,
            contact.subject, contact.message)
     mail.send(msg)

@@ -1,27 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
-{% if current_user.is_authenticated %}
+{% if current_user.is_authenticated and current_user.is_admin() %}
     <h2>{{ title }} ({{ orders.total }}) </h2>
         <table class="table table-bordered table-hover ordersTable">
             <thead>
-            <tr bgcolor="#00FFFF">
-                <th>Order Date</th>
-                <th>Order Id</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Report ID</th>
-                <th>Order Price</th>
-            </tr>
+                <tr bgcolor="#00FFFF">
+                    <th>Order Date</th>
+                    <th>Order ID</th>
+                    <th>Report ID</th>
+                    <th>User ID</th>
+                    <th>Order Price</th>
+                </tr>
             </thead>
             <tbody>
             {% for order in orders.items %}
                 <tr>
                     <td>{{ order.date_order.strftime('%Y-%m-%d %H:%M:%S') }}</td>
                     <td>{{ order.id }}</td>
-{#                    <td>{{ order.firstname }}</td> #}
-                    <td><a class="archive-title" href="{{ url_for('reports.show_orders_user', email=order.email) }}">{{ order.firstname }}</a></td>
-                    <td>{{ order.lastname }}</td>
                     <td><a class="archive-title" href="{{ url_for('reports.show_orders_report', report_id=order.report_id) }}">{{ order.report_id }}</a></td>
+                    <td><a class="archive-title" href="{{ url_for('reports.show_orders_user', user_id=order.user_id) }}">{{ order.user_id }}</a></td>
                     <td> ${{ "{:,d}".format(order.order_price) }}</td>
                 </tr>
             {% endfor %}
@@ -30,11 +27,23 @@
         <table class="table table-bordered table-hover">
             <tr>
                 <th>Total</th>
-                <td>${{ "{:,d}".format(summary['amount']) }}</td>
+                <td>
+                    {% if summary %}
+                    ${{ "{:,d}".format(summary['amount']) }}
+                    {% endif %}
+                </td>
                 <th>Average</th>
-                <td>${{ "{:,d}".format(summary['average']) }}</td>
+                <td>
+                    {% if summary %}
+                    ${{ "{:,d}".format(summary['average']) }}
+                    {% endif %}
+                </td>
                 <th>Count</th>
-                <td>{{ "{:,d}".format(summary['count']) }}</td>
+                <td>
+                    {% if summary %}
+                    {{ "{:,d}".format(summary['count']) }}
+                    {% endif %}
+                </td>
             </tr>
         </table>
     {% for page_num in orders.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
@@ -42,7 +51,7 @@
         {% if orders.page == page_num %}
             <a class="btn btn-info mb-4" href="{{ url_for('reports.show_orders', page=page_num) }}">{{ page_num }}</a>
         {% else%}
-            <a class="btn btn-info mb-4" href="{{ url_for('reports.show_orders', page=page_num) }}">{{ page_num }}</a>
+            <a class="btn btn-outline-info mb-4" href="{{ url_for('reports.show_orders', page=page_num) }}">{{ page_num }}</a>
         {% endif %}
     {% else %}
         ...
