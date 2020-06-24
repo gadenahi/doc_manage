@@ -32,7 +32,7 @@ MarkupSafe==1.1.1
 matplotlib==3.1.1
 mccabe==0.6.1
 mkl-fft==1.0.6
-mkl-random==1.1.0
+mkl-random==1.0.1.1
 mkl-service==2.3.0
 numpy==1.18.1
 pandas==1.0.3
