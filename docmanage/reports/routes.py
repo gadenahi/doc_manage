@@ -10,6 +10,7 @@ from flask import (render_template, url_for, flash, redirect, request,
 from flask_login import current_user
 import pandas as pd
 from datetime import datetime
+import pytz
 
 
 reports = Blueprint('reports', __name__)
@@ -201,10 +202,15 @@ def new_order():
     summary = get_amount(cart_list, "session")
     if form.validate_on_submit():
         for cart in cart_list:
+            western = pytz.timezone('US/Pacific')
+            dt_pt=datetime.now(tz=western)
+            dt_dst = datetime.utcnow()
+            # dt_pt = western.normalize(western.localize(dt_dst))
+            # print(dt_pt)
             order = Order(user_id=current_user.id,
                           report_id=cart['id'],
                           order_price=cart['order_price'],
-                          # date_order=datetime.utcnow() # debug purpose
+                          date_order=dt_pt
                           )
             db.session.add(order)
         db.session.commit()
