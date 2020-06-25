@@ -1,7 +1,7 @@
 import os
 import secrets
 from flask import current_app, request, render_template
-import pandas as pd
+import pandas
 from flask_mail import Message
 from docmanage import mail
 from docmanage.config import Config
@@ -40,9 +40,9 @@ def get_amount(data, req):
     :return: sum of order_price
     """
     if req == 'session':
-        df = pd.DataFrame(data)
+        df = pandas.DataFrame(data)
     elif req == "order":
-        df = pd.DataFrame([d.order_price for d in data],
+        df = pandas.DataFrame([d.order_price for d in data],
                           columns=["order_price"])
 
     summary = dict()
