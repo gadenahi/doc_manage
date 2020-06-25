@@ -28,10 +28,11 @@ lxml==4.5.1
 mammoth==1.4.10
 MarkupSafe==1.1.1
 mccabe==0.6.1
-mkl-fft==1.0.6
-mkl-random==1.0.1.1
+mkl-fft==1.1.0
+mkl-random==1.1.1
+mkl-service==2.3.0
 numpy==1.18.1
-pandas @ file:///opt/concourse/worker/volumes/live/38d1301c-8fa9-4d2f-662e-34dddf33b183/volume/pandas_1592841668171/work
+pandas==1.0.5
 passlib==1.7.2
 pbr==3.1.1
 psycopg2==2.8.4
