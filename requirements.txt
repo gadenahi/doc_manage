@@ -28,9 +28,9 @@ lazy-object-proxy==1.4.3
 MarkupSafe==1.1.1
 matplotlib==3.2.2
 mccabe==0.6.1
-mkl-fft==1.1.0
-mkl-random==1.1.1
-mkl-service==2.3.0
+mkl-fft==1.0.6
+mkl-random==1.0.1.1
+mkl==2019.0
 numpy==1.18.5
 pandas==1.0.5
 psycopg2==2.8.4
