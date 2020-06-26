@@ -10,7 +10,8 @@ class Config:
     Setting for SQL and mail server
     """
     # .bash-profile
-    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'abc123ced456'
+    WTF_CSRF_SECRET_KEY = os.getenv('SECRET_KEY') or 'abc123ced456'
     SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI') or os.environ.get('DATABASE_URL')
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
