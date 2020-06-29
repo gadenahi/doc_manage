@@ -1,9 +1,10 @@
-from flask import render_template, Blueprint, request, url_for
+from flask import Blueprint, render_template, request, url_for
+from flask import current_app
+import os
+
 from docmanage.analytics.utils import (analyze_data_draw, cal_days, cal_months,
                                        cal_years)
 from docmanage.usersaccess.access_control import requires_access_level
-from flask import current_app
-import os
 
 
 analytics = Blueprint('analytics', __name__)

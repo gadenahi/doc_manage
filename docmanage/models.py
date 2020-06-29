@@ -2,8 +2,8 @@
 This module is models for User and Report
 """
 from datetime import datetime
-from docmanage import db, login_manager, bcrypt
 from flask_login import UserMixin
+from docmanage import db, login_manager
 
 
 @login_manager.user_loader
@@ -166,10 +166,8 @@ class Order(db.Model):
     report_id = db.Column(db.Integer, db.ForeignKey('report.id'),
                           nullable=False)
     order_price = db.Column(db.Integer, nullable=False)
-
     date_order = db.Column(db.DateTime, nullable=False,
-                            default=datetime.utcnow)
-    # date_order = db.Column(db.DateTime, nullable=False) # for the debug purpose
+                           default=datetime.utcnow)
 
     def get_users(self, user_id):
         return User.query.filter_by(id=user_id)

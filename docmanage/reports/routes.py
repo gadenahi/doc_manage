@@ -1,16 +1,17 @@
+from datetime import datetime
+from flask import (Blueprint, flash, render_template, redirect, request,
+                   session, url_for)
+from flask_login import current_user
+import pandas as pd
+import pytz
+
 from docmanage import db
-from docmanage.models import Report, Order, User
-from docmanage.reports.forms import ReportForm, OrderForm
-from docmanage.reports.utils import save_pdf, get_amount, send_email_orders
+from docmanage.models import Order, Report, User
+from docmanage.reports.forms import OrderForm, ReportForm
+from docmanage.reports.utils import get_amount, save_pdf, send_email_orders
 from docmanage.sub_menu.forms import SearchForm
 from docmanage.sub_menu.utils import get_latest_reports
 from docmanage.usersaccess.access_control import requires_access_level
-from flask import (render_template, url_for, flash, redirect, request,
-                   Blueprint, session)
-from flask_login import current_user
-import pandas as pd
-from datetime import datetime
-import pytz
 
 
 reports = Blueprint('reports', __name__)
@@ -26,15 +27,16 @@ def new_report():
     """
     form = ReportForm()
     if form.validate_on_submit():
-        report = Report(title=form.title.data,
-                        date_published=form.date_published.data,
-                        summary=form.summary.data.replace('\r', '<br>'),
-                        table=form.table.data.replace('\r', '<br>'),
-                        # https://qiita.com/gacky35/items/8498176ee80d6b6ce014
-                        price=form.price.data,
-                        status=form.status.data,
-                        pdf_file=save_pdf(form.pdf.data)
-                        )
+        report = Report(
+            title=form.title.data,
+            date_published=form.date_published.data,
+            summary=form.summary.data.replace('\r', '<br>'),
+            table=form.table.data.replace('\r', '<br>'),
+            # https://qiita.com/gacky35/items/8498176ee80d6b6ce014
+            price=form.price.data,
+            status=form.status.data,
+            pdf_file=save_pdf(form.pdf.data)
+        )
         db.session.add(report)
         db.session.commit()
         flash('Your report has been posted', 'success')
@@ -49,7 +51,7 @@ def report(report_id):
     """
     To show the each reports
     :param report_id: unique number by report
-    :return: render report.html, title, report, search_form
+    :return: render report.html, title, report, search_form, latest_reports
     """
     search_form = SearchForm()
     report = Report.query.get_or_404(report_id)
@@ -66,7 +68,7 @@ def update_report(report_id):
     To update the report
     :param report_id: unique number by report
     :return: if update report submitted, redirect reports.report and report.id
-    Render the create_report.html, title form
+    Render the create_report.html, pdf_file, title, form, legend
     """
     report = Report.query.get_or_404(report_id)
     form = ReportForm()
@@ -195,7 +197,7 @@ def new_order():
     """
     To post the order on the website
     :return: If form is submitted, redirect home.html
-    At default, render order.html, title, form. legend, amount
+    At default, render order.html, title, form, summary
     """
     form = OrderForm()
     cart_list = session['Order']
@@ -204,7 +206,7 @@ def new_order():
         for cart in cart_list:
             western = pytz.timezone('US/Pacific')
             dt_pt=datetime.now(tz=western)
-            dt_dst = datetime.utcnow()
+            # dt_dst = datetime.utcnow()
             # dt_pt = western.normalize(western.localize(dt_dst))
             # print(dt_pt)
             order = Order(user_id=current_user.id,
@@ -286,7 +288,7 @@ def show_customers():
     """
     To show customers
     :param:
-    :return: render customers.html, title, orders, user, summary
+    :return: render customers.html, title, customers
     """
     page = request.args.get('page', 1, type=int)
     customers = User.query.order_by(User.firstname.desc()).paginate(
@@ -298,19 +300,25 @@ def show_customers():
 @reports.route('/upload', methods=['GET', 'POST'])
 @requires_access_level('admin')
 def upload_list():
+    """
+    To upload the list of reports at excel
+    :return: if POST successfully, redirect to home.html
+    at default render upload_list, title, excelformat
+    """
     if request.method == 'POST':
         f = request.files['send_file']
         data_xls = pd.read_excel(f)
         for index, data in data_xls.iterrows():
             checkReport = Report.query.filter_by(title=data["title"]).first()
             if not checkReport:
-                report = Report(title=data["title"],
-                                date_published=data["date_published"],
-                                summary=data["summary"].replace('\n', '<br>'),
-                                table=data["table"].replace('\n', '<br>'),
-                                price=data["price"],
-                                status=data["status"]
-                                )
+                report = Report(
+                    title=data["title"],
+                    date_published=data["date_published"],
+                    summary=data["summary"].replace('\n', '<br>'),
+                    table=data["table"].replace('\n', '<br>'),
+                    price=data["price"],
+                    status=data["status"]
+                )
                 db.session.add(report)
             else:
                 flash('Same report name is already exist', 'success')

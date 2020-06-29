@@ -28,12 +28,12 @@
             <tbody>
                 {% if resAnalyzeDatas %}
                 {% for response in resAnalyzeDatas %}
-                    <tr>
-                        <td>{{ response['date'] }}</td>
-                        <td>${{ "{:,d}".format(response['sum']) }}</td>
-                        <td>${{ "{:,d}".format(response['mean']) }}</td>
-                        <td>{{ response['count'] }}</td>
-                    </tr>
+                <tr>
+                    <td>{{ response['date'] }}</td>
+                    <td>${{ "{:,d}".format(response['sum']) }}</td>
+                    <td>${{ "{:,d}".format(response['mean']) }}</td>
+                    <td>{{ response['count'] }}</td>
+                </tr>
                 {% endfor %}
                 {% endif %}
             </tbody>

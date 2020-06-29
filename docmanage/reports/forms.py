@@ -3,8 +3,8 @@ This module is Report form for report website
 """
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import (StringField, SubmitField, TextAreaField, DateField,
-                     IntegerField, RadioField)
+from wtforms import (DateField, IntegerField, RadioField, StringField,
+                     SubmitField, TextAreaField)
 from wtforms.validators import DataRequired, NumberRange
 """
 As of Apr. 3, 2020, need to use werkzeug==0.16.0 due to the degrade of 1.0.0

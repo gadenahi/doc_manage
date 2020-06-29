@@ -1,8 +1,9 @@
 import os
-import secrets
 from flask import current_app, request, render_template
-import pandas as pd
 from flask_mail import Message
+import pandas as pd
+import secrets
+
 from docmanage import mail
 from docmanage.config import Config
 
@@ -65,14 +66,11 @@ def send_email_orders(user, cart_list, summary):
     :param summary: total ammount of orders
     :return: None
     """
-
     msg = Message('Thank you for your orders of Market Report',
                   sender='noreply@demo.com',
                   recipients=[user.email, config.MAIL_USERNAME])
     msg.html = render_template('order_email.html', user=user,
-                             cart_list=cart_list, summary=summary)
-
+                               cart_list=cart_list, summary=summary)
     # https://stackoverflow.com/questions/49363657/using-flask-mail-to-send-the-rendered-form
-
     mail.send(msg)
 

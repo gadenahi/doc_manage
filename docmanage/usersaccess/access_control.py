@@ -1,5 +1,6 @@
-from functools import wraps
 from flask import flash, redirect, session, url_for
+from functools import wraps
+
 from docmanage.models import User
 
 

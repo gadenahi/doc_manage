@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 
 print('Creating database tables for Family Recipes app...')
 

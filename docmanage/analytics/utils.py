@@ -1,10 +1,11 @@
-import os
-from docmanage.models import Order
-from flask import current_app
 import calendar
-import pandas as pd
-import matplotlib.pyplot as plt
 from datetime import datetime
+from flask import current_app
+import matplotlib.pyplot as plt
+import os
+import pandas as pd
+
+from docmanage.models import Order
 
 
 def analyze_data_draw(bydates, order_query):

@@ -1,8 +1,9 @@
+from flask import Blueprint, flash, redirect, render_template, url_for
+
 from docmanage import db
-from docmanage.models import Contact
 from docmanage.contacts.forms import ContactForm
 from docmanage.contacts.utils import send_email
-from flask import Blueprint, flash, redirect, render_template, url_for
+from docmanage.models import Contact
 
 
 contacts = Blueprint('contacts', __name__)

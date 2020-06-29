@@ -1,9 +1,10 @@
-from flask_wtf import FlaskForm
-from wtforms import (StringField, PasswordField, SubmitField, BooleanField,
-                     SelectField)
-from wtforms.validators import (DataRequired, Length, Email,
-                                EqualTo, ValidationError, InputRequired)
 from flask_login import current_user
+from flask_wtf import FlaskForm
+from wtforms import (BooleanField, PasswordField, StringField, SubmitField,
+                     SelectField)
+from wtforms.validators import (DataRequired, Email, EqualTo, InputRequired,
+                                Length, ValidationError)
+
 from docmanage.models import User
 
 

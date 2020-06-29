@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request
+from flask import Blueprint, render_template, request
 from docmanage.models import Report
 from docmanage.sub_menu.forms import SearchForm
 

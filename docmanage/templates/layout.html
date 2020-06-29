@@ -39,13 +39,13 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Management
                             </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="{{ url_for('reports.show_customers')}}">Customers</a>
-                                    <a class="dropdown-item" href="{{ url_for('analytics.analize')}}">Orders Analytics</a>
-                                    <a class="dropdown-item" href="{{ url_for('reports.show_orders')}}">Orders</a>
-                                    <a class="dropdown-item" href="{{ url_for('reports.new_report')}}">New Report</a>
-                                    <a class="dropdown-item" href="{{ url_for('reports.upload_list')}}">Upload Report List</a>
-                                </div>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{{ url_for('reports.show_customers')}}">Customers</a>
+                                <a class="dropdown-item" href="{{ url_for('analytics.analize')}}">Orders Analytics</a>
+                                <a class="dropdown-item" href="{{ url_for('reports.show_orders')}}">Orders</a>
+                                <a class="dropdown-item" href="{{ url_for('reports.new_report')}}">New Report</a>
+                                <a class="dropdown-item" href="{{ url_for('reports.upload_list')}}">Upload Report List</a>
+                            </div>
                         </li>
 {# https://www.sejuku.net/blog/75948 #}
                         <a class="nav-item nav-link" href="{{ url_for('users.account')}}">Account</a>

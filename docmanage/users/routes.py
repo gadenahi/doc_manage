@@ -1,9 +1,10 @@
-from docmanage import db, bcrypt
-from docmanage.models import User, Country, Role
-from docmanage.users.forms import (RegistrationForm, LoginForm,
-                                   UpdateAccountForm, UpdatePasswordForm)
-from flask import render_template, url_for, redirect, request, Blueprint, flash
+from flask import Blueprint, flash, render_template, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
+
+from docmanage import bcrypt, db
+from docmanage.models import Country, Role, User
+from docmanage.users.forms import (LoginForm, RegistrationForm,
+                                   UpdateAccountForm, UpdatePasswordForm)
 
 
 users = Blueprint('users', __name__)
@@ -57,7 +58,7 @@ def login():
     :return: if authenticated, redirected to homepage
     if login form is submitted, and url contains next, redirect to next page,
     otherwise to homepage
-    At default render login.html, title
+    At default render login.html, title, form
     """
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))

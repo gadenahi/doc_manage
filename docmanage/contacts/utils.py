@@ -1,4 +1,5 @@
 from flask_mail import Message
+
 from docmanage import mail
 from docmanage.config import Config
 
@@ -12,7 +13,7 @@ def send_email(contact):
     :param contact: input from contact form
     :return: None
     """
-    msg = Message('Thank you for your orders from Market Report',
+    msg = Message('Thank you for your contact from Market Report',
                   sender='noreply@demo.com',
                   recipients=[contact.email, config.MAIL_USERNAME])
     msg.body = """

@@ -2,10 +2,10 @@
 this module to ccontrol the access for flaskadmin
 """
 
+from flask import redirect, request, url_for
 from flask_admin import AdminIndexView
-from flask_login import current_user
-from flask import redirect, url_for, request
 from flask_admin.contrib.sqla import ModelView
+from flask_login import current_user
 
 
 class MyModelView(ModelView):

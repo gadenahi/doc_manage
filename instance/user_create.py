@@ -1,6 +1,6 @@
-import sys
 import os
-
+import pandas as pd
+import sys
 print('Creating database tables for Family Recipes app...')
 
 if os.path.abspath(os.curdir) not in sys.path:
@@ -10,7 +10,6 @@ if os.path.abspath(os.curdir) not in sys.path:
 
 from docmanage import db, bcrypt, create_app
 from docmanage.models import User, Role
-import pandas as pd
 
 app = create_app()
 ctx = app.app_context()
